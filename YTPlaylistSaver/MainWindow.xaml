@@ -5,8 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YTPlaylistSaver"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="YouTube Playlist Saver" Height="768" Width="1024">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="Enter your YouTube Data API v3 key (no OAuth needed):" FontSize="16"></TextBlock>
+            <PasswordBox Name="ApiKeyPasswordBox" Width="400" Margin="0 10" FontSize="16"></PasswordBox>
+            <TextBlock Text="Enter the playlist ID (after &quot;list=&quot; in the link)." FontSize="16"/>
+            <TextBlock Text="The playlist must be unlisted or public." FontSize="16"></TextBlock>
+            <TextBox Name="PlaylistIdTextBox" Width="400" Margin="0 10" FontSize="16"></TextBox>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Margin="0 0 10 0" FontSize="16" Click="exampleClick">Try an example playlist!</Button>
+                <Button FontSize="16" Click="saveClick">Save</Button>
+            </StackPanel>
+            <TextBlock Name="StatusTextBlock" Text="" Margin="0 10 0 0" FontSize="16"></TextBlock>
+        </StackPanel>
     </Grid>
 </Window>
