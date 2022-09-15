@@ -52,12 +52,11 @@ namespace YTPlaylistSaver
                 return;
             }
 
-            DateTime currentDateTime;
             using (var connection = new SqliteConnection("Data Source=database.db"))
             {
                 connection.Open();
 
-                currentDateTime = DateTime.Now;
+                DateTime currentDateTime = DateTime.Now;
 
                 try
                 {
@@ -109,7 +108,7 @@ namespace YTPlaylistSaver
 
             // Good enough...
             // TODO: if the user hits Save mutliple times then multiple result windows will show
-            new ResultsWindow(playlistId, playlistTitle, currentDateTime).Show();
+            new ResultsWindow(playlistId, playlistTitle).Show();
             Close();
         }
 
