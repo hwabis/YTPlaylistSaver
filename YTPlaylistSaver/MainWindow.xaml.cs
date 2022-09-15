@@ -17,6 +17,15 @@ namespace YTPlaylistSaver
             InitializeComponent();
         }
 
+        private void copyApiInfoLinkToClipboard(object sender, RoutedEventArgs e)
+        {
+            // I couldn't get Text from the XAML textblock or hyperlink...
+            const string apiInfoHyperlink = "https://developers.google.com/youtube/registering_an_application";
+
+            Clipboard.SetText(apiInfoHyperlink);
+            StatusTextBlock.Text = "Copied link.";
+        }
+
         private void exampleClick(object sender, RoutedEventArgs e)
         {
             const string examplePlaylistId = "PL06C2DC7DDCDEBAFE";
