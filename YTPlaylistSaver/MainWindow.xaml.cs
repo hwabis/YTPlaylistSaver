@@ -52,11 +52,12 @@ namespace YTPlaylistSaver
                 return;
             }
 
+            DateTime currentDateTime;
             using (var connection = new SqliteConnection("Data Source=database.db"))
             {
                 connection.Open();
 
-                DateTime currentDateTime = DateTime.Now;
+                currentDateTime = DateTime.Now;
 
                 try
                 {
@@ -76,11 +77,11 @@ namespace YTPlaylistSaver
                         {
                             // Save the video
                             var videoCommand = connection.CreateCommand();
-                            videoCommand.CommandText = @"INSERT OR REPLACE INTO video VALUES(@id, @title, @channel_id, @channel_title)";
+                            videoCommand.CommandText = @"INSERT OR REPLACE INTO video VALUES(@id, @title, @channel_title, @channel_id)";
                             videoCommand.Parameters.AddWithValue("@id", playlistItem.ContentDetails.VideoId);
                             videoCommand.Parameters.AddWithValue("@title", playlistItem.Snippet.Title);
-                            videoCommand.Parameters.AddWithValue("@channel_id", playlistItem.Snippet.VideoOwnerChannelId);
                             videoCommand.Parameters.AddWithValue("@channel_title", playlistItem.Snippet.VideoOwnerChannelTitle);
+                            videoCommand.Parameters.AddWithValue("@channel_id", playlistItem.Snippet.VideoOwnerChannelId);
                             videoCommand.ExecuteNonQuery();
 
                             // Save the relation
@@ -107,7 +108,8 @@ namespace YTPlaylistSaver
             }
 
             // Good enough...
-            new ResultsWindow().Show();
+            // TODO: if the user hits Save mutliple times then multiple result windows will show
+            new ResultsWindow(playlistId, playlistTitle, currentDateTime).Show();
             Close();
         }
 

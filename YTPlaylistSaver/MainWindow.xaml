@@ -26,8 +26,8 @@
             <TextBlock Text="The playlist must be unlisted or public." FontSize="16"></TextBlock>
             <TextBox Name="PlaylistIdTextBox" Width="420" Margin="0 10" FontSize="16"></TextBox>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Margin="0 0 10 0" FontSize="16" Click="exampleClick">Try an example playlist!</Button>
-                <Button FontSize="16" Click="saveClick">Save</Button>
+                <Button Padding="10 0" Margin="0 0 10 0" FontSize="16" Click="exampleClick">Try an example playlist!</Button>
+                <Button Padding="10 0" FontSize="16" Click="saveClick">Save</Button>
             </StackPanel>
             <TextBlock Name="StatusTextBlock" Text="" Margin="0 10 0 0" FontSize="16"></TextBlock>
         </StackPanel>
