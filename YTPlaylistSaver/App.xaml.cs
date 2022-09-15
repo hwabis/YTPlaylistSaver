@@ -15,20 +15,25 @@ namespace YTPlaylistSaver
                 command.CommandText =
                 @"
                     CREATE TABLE IF NOT EXISTS playlist (
-                        id VARCHAR(100) PRIMARY KEY,
-                        name VARCHAR(100)
+                        id VARCHAR(100),
+                        time_saved DATETIME,
+                        title VARCHAR(100),
+                        PRIMARY KEY(id, time_saved)
                     );
 
                     CREATE TABLE IF NOT EXISTS video (
                         id VARCHAR(100) PRIMARY KEY,
-                        name VARCHAR(100)
+                        title VARCHAR(100),
+                        channel_title VARCHAR(100),
+                        channel_id VARCHAR(100)
                     );
 
                     CREATE TABLE IF NOT EXISTS video_in_playlist (
                         playlist_id VARCHAR(100),
+                        playlist_time_saved DATETIME,
                         video_id VARCHAR(100),
                         video_index INTEGER,
-                        FOREIGN KEY(playlist_id) REFERENCES playlist(id), 
+                        FOREIGN KEY(playlist_id, playlist_time_saved) REFERENCES playlist(id, time_saved),
                         FOREIGN KEY(video_id) REFERENCES video(id)
                     );
                 ";
@@ -37,7 +42,7 @@ namespace YTPlaylistSaver
                 {
                     command.ExecuteNonQuery();
                 }
-                catch (SqliteException ex) 
+                catch (SqliteException ex)
                 {
                     MessageBox.Show(ex.ToString(), "Error");
                     Shutdown();
