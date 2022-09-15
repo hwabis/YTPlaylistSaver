@@ -2,6 +2,8 @@
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -24,29 +26,36 @@ namespace YTPlaylistSaver
         private async void saveClick(object sender, RoutedEventArgs e)
         {
             StatusTextBlock.Text = "Saving...";
-            var response = await getAndSavePlaylistResults(PlaylistIdTextBox.Text, ApiKeyPasswordBox.Password);
 
-            if (response != null)
+            try
             {
-                /*
-                foreach (var playlistItem in response.Items)
-                {
-                    StatusTextBlock.Text += "\n" + playlistItem.Snippet.Title + playlistItem.Snippet.VideoOwnerChannelTitle;
-                }
-                */
-
-                // Good enough...
-                new ResultsWindow().Show();
-                Close();
+                var response = await getPlaylistItemResults(PlaylistIdTextBox.Text, ApiKeyPasswordBox.Password);
             }
-            else
+            catch (GoogleApiException)
             {
                 StatusTextBlock.Text = "Save failed; check the API key and playlist ID.";
+                return;
             }
+
+            /*
+            foreach (var playlistItem in response.Items)
+            {
+                StatusTextBlock.Text += "\n" + playlistItem.Snippet.Title + playlistItem.Snippet.VideoOwnerChannelTitle;
+            }
+            */
+
+            // TODO: Save to database
+
+            // Good enough...
+            new ResultsWindow().Show();
+            Close();
         }
 
-        private async Task<PlaylistItemListResponse?> getAndSavePlaylistResults(string playlistId, string apiKey)
+        private async Task<List<PlaylistItemListResponse>> getPlaylistItemResults(string playlistId, string apiKey)
         {
+            List<PlaylistItemListResponse> responses = new List<PlaylistItemListResponse>();
+            int resultsPerResponse = 50;
+
             var service = new YouTubeService(new BaseClientService.Initializer
             {
                 ApiKey = apiKey
@@ -54,21 +63,20 @@ namespace YTPlaylistSaver
             var request = new PlaylistItemsResource.ListRequest(service, "snippet")
             {
                 PlaylistId = playlistId,
-                MaxResults = 5000
+                MaxResults = resultsPerResponse
             };
 
-            try
+            // This works I guess...
+            var response = await request.ExecuteAsync();
+            responses.Add(response);
+            for (int i = resultsPerResponse; i < response.PageInfo.TotalResults; i += resultsPerResponse)
             {
-                var response = await request.ExecuteAsync();
-
-                // TODO: save to database
-
-                return response;
+                request.PageToken = response.NextPageToken;
+                response = await request.ExecuteAsync();
+                responses.Add(response);
             }
-            catch (GoogleApiException)
-            {
-                return null;
-            }
+
+            return responses;
         }
     }
 }

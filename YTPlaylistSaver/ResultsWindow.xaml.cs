@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using Microsoft.Data.Sqlite;
+using System;
+using System.IO;
+using System.Windows;
 
 namespace YTPlaylistSaver
 {
