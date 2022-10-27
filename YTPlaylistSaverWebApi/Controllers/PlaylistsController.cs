@@ -56,8 +56,6 @@ namespace YTPlaylistSaverWebApi.Controllers
         [HttpGet("{playlistId}/{timeSavedString}")]
         public IEnumerable<Video> GetVideos(string playlistId, string timeSavedString)
         {
-            Console.WriteLine(timeSavedString);
-
             DateTime timeSaved = DateTime.Parse(timeSavedString);
             var videos = new List<Video>();
 
