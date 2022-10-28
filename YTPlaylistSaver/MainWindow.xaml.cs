@@ -68,7 +68,6 @@ namespace YTPlaylistSaver
                     playlistCommand.Parameters.AddWithValue("@title", playlistTitle);
                     playlistCommand.ExecuteNonQuery();
 
-
                     int currentVideoIndex = 0;
                     foreach (var playlistItemListResponse in playlistItemListResponses)
                     {

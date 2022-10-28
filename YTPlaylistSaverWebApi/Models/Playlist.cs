@@ -7,10 +7,8 @@ namespace YTPlaylistSaverWebApi.Models
         [Required]
         public string? Id { get; set; }
 
-        [Required]
-        public DateTime TimeSaved { get; set; }
-
-        [Required]
         public string? Title;
+
+        public DateTime TimeSaved { get; set; }
     }
 }
